@@ -1,4 +1,4 @@
-# Wizualizacje interfejsu SkiN
+# Wizualizacje interfejsu
 
 Makiety interfejsu aplikacji przygotowane w Google Stitch. Służą jako wzór wyglądu przy implementacji frontendu.
 
