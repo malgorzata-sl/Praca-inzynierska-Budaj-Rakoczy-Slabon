@@ -53,3 +53,20 @@ jeśli w dokumencie są błędy (np. zła numeracja albo niejasny tekst). Nazwy 
 (nietypowe znaki, bardzo długie) trzeba najpierw przejrzeć i potwierdzić flagą
 `--accept-suspicious`. Import można uruchomić ponownie – nazwy, które już są w bazie,
 zostają pominięte.
+
+## Import funkcji składników
+
+Funkcje pochodzą z Decyzji Komisji 2006/257/WE (sekcja I wykazu składników, Dz.U. L 97
+z 5.4.2006). Dane przygotowujemy poza repozytorium: tabelę odczytujemy trzema niezależnymi
+sposobami (dwa odczyty wersji angielskiej i wersja polska), a do pliku CSV trafiają tylko
+zgodne wyniki dla nazw z Decyzji 2025/1175. Plików CSV nie publikujemy w repozytorium.
+Najpierw importujemy nazwy, potem funkcje (w katalogu `backend/`):
+
+```
+python -m app.import_functions gotowe_do_importu.csv dodatkowe_bezpieczne.csv --dry-run
+python -m app.import_functions gotowe_do_importu.csv dodatkowe_bezpieczne.csv
+```
+
+Import zatrzymuje się i niczego nie zapisuje, jeśli w plikach jest funkcja spoza oficjalnej
+listy 63 funkcji, powtórzona nazwa albo nazwa, której nie ma w bazie. Ponowne uruchomienie
+nie tworzy duplikatów.
