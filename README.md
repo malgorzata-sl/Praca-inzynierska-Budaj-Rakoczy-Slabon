@@ -11,10 +11,10 @@ i pokazuje, co znajduje się w produkcie.
 
 ## Backend
 
-Python 3.13, FastAPI, PostgreSQL (Supabase). Polecenia uruchamiamy w katalogu `backend/`.
+Python 3.12, FastAPI, PostgreSQL (Supabase). Polecenia uruchamiamy w katalogu `backend/`.
 
 ```
-python -m venv .venv
+py -3.12 -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 ```
@@ -35,3 +35,21 @@ npx supabase migration new nazwa_migracji
 npx supabase db push --remote="<DATABASE_URL>" --dry-run
 npx supabase db push --remote="<DATABASE_URL>"
 ```
+
+## Import nazw składników
+
+Nazwy INCI pochodzą z Decyzji wykonawczej Komisji (UE) 2025/1175 (słownik wspólnych nazw
+składników, Dz.U. L z 10.7.2025). PDF zamieniamy na tekst narzędziem `pdftotext`
+(jest w Git for Windows), a potem uruchamiamy import w katalogu `backend/`:
+
+```
+pdftotext -enc UTF-8 -layout OJ_L_202501175_PL_TXT.pdf decyzja.txt
+python -m app.import_ingredients decyzja.txt --dry-run
+python -m app.import_ingredients decyzja.txt --accept-suspicious
+```
+
+`--dry-run` tylko pokazuje podsumowanie i niczego nie zapisuje. Import zatrzymuje się,
+jeśli w dokumencie są błędy (np. zła numeracja albo niejasny tekst). Nazwy podejrzane
+(nietypowe znaki, bardzo długie) trzeba najpierw przejrzeć i potwierdzić flagą
+`--accept-suspicious`. Import można uruchomić ponownie – nazwy, które już są w bazie,
+zostają pominięte.
